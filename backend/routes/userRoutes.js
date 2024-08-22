@@ -4,7 +4,7 @@ const { loginUser, registerUser, getMe } = require("../controllers/userControlle
 
 routes.post("/register", registerUser);
 routes.post("/login", loginUser);
-routes.get("/me", protect, getMe);
+routes.get("/me", getMe);
 
 
 

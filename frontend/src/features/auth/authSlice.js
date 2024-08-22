@@ -11,24 +11,11 @@ const initialState = {
   message: "",
 };
 
-export const register = createAsyncThunk("auth/register", async (user, thunkAPI) => {
-  try {
-    return await authServices.register(user);
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
-  }
-});
-
-// Login User. This will get called from the login component
-export const login = createAsyncThunk(
-  "auth/login",
+export const register = createAsyncThunk(
+  "auth/register",
   async (user, thunkAPI) => {
     try {
-      return await authServices.login(user);
+      return await authServices.register(user);
     } catch (error) {
       const message =
         (error.response &&
@@ -40,6 +27,19 @@ export const login = createAsyncThunk(
     }
   }
 );
+
+// Login User. This will get called from the login component
+export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
+  try {
+    return await authServices.login(user);
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
 
 export const authSlice = createSlice({
   name: "auth",

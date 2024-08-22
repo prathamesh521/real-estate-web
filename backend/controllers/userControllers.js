@@ -67,41 +67,50 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
+  // Check if email and password are provided
   if (!email || !password) {
     res.status(400);
     throw new Error("Please provide email and password");
   }
 
+  // Find the user by email
   const user = await User.findOne({ email });
 
   if (!user) {
     res.status(401);
-    throw new Error("User Does Not Exist");
+    throw new Error("User does not exist");
   }
 
+  // Compare passwords
   if (user && (await bcrypt.compare(password, user.password))) {
-    // Generate token and store it in a cookie
+    // Generate token
     const token = generateToken(user._id);
+
+    // Set token in a cookie
     res.cookie("token", token, {
-      httpOnly: true, // Secure the cookie by preventing client-side JavaScript access
+      httpOnly: true, // Secure the cookie
       secure: process.env.NODE_ENV === "production", // Use HTTPS in production
-      sameSite: "strict", // Prevent CSRF attacks
+      sameSite: "strict", // Prevent CSRF
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
 
-    res.json({
+    // Send response with user details and token
+    res.status(200).json({
       _id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
       role: user.role,
-      token: generateToken(user._id),
+      token, // Send token in response (optional)
     });
   } else {
     res.status(401);
     throw new Error("Invalid email or password");
   }
 });
+
+module.exports = loginUser;
+
 
 
 /**
@@ -110,8 +119,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const logoutUser = asyncHandler(async (req, res) => {
   res.cookie("token", "", {
-    httpOnly: true,
-    expires: new Date(0), // Expire immediately
+    httpOnly: true
   });
 
   res.status(200).json({ message: "User logged out" });
