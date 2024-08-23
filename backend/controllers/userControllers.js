@@ -59,7 +59,6 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-
 /**
  * Login User
  */
@@ -111,15 +110,13 @@ const loginUser = asyncHandler(async (req, res) => {
 
 module.exports = loginUser;
 
-
-
 /**
  * Logout User
  */
 
 const logoutUser = asyncHandler(async (req, res) => {
   res.cookie("token", "", {
-    httpOnly: true
+    httpOnly: true,
   });
 
   res.status(200).json({ message: "User logged out" });
@@ -130,9 +127,12 @@ const logoutUser = asyncHandler(async (req, res) => {
  */
 
 const getMe = asyncHandler(async (req, res) => {
-  await res.json({ message: "It's me!!" });
-});
+  const { _id, firstName, email} = await User.findById(req.user.id);
 
+  res.status(200).json({
+    _id, firstName, email
+  });
+});
 
 /**
  * Generate Token

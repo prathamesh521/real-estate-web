@@ -1,10 +1,11 @@
 const routes = require("express").Router();
-const protect = require("../middlewares/authMiddleware");
+
 const { loginUser, registerUser, getMe } = require("../controllers/userControllers");
+const { protect } = require("../middlewares/authMiddleware");
 
 routes.post("/register", registerUser);
 routes.post("/login", loginUser);
-routes.get("/me", getMe);
+routes.get("/me", protect, getMe);
 
 
 
