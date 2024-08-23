@@ -43,9 +43,9 @@ const Navbar = () => {
           >
             <ul className="navbar-nav mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
-                  Products
-                </a>
+                <Link to='/add-listings' className="nav-link active" >
+                  Add Products
+                </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to={user ? "/profile" : "/register"}>

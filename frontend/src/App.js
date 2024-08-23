@@ -13,11 +13,11 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/add-listings" element={<AddListings />} />
+        <Route path="/add-listings" element={<UserDashboard />} />
         <Route path="/register" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/property/:id" element={<DetailPage />} />
-        <Route path="/me" element={<UserDashboard />} />
+        <Route path="/products/:slug" element={<DetailPage />} />
+        {/* <Route path="/me" element={<UserDashboard />} /> */}
         
       </Routes>
     </Router>

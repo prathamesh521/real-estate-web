@@ -1,27 +1,46 @@
-import React from 'react'
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { products } from "../data";
+import { useSelector, useDispatch } from "react-redux";
+import { getProductBySlug, reset } from "../features/products/productSlice";
+import Navbar from "./Navbar";
 
 const DetailPage = () => {
-    const { id } = useParams();
-    console.log('id:', id);
+  const { slug } = useParams();
+  console.log('slug:', slug);
+  const dispatch = useDispatch();
 
-    const product = products.find((product) => product.id === parseInt(id));
+  // Get the specific product state from the Redux store
+  const { product, isLoading, isError, message } = useSelector(
+    (state) => state.product
+  );
 
-  if (!product) {
-    return <h2>Product not found</h2>;
-    }
-    return (
-        <div className="container">
-          <div className="card">
-            <img src={product.imageSrc} className="card-img-top" alt={product.name} />
-            <div className="card-body">
-              <h5 className="card-title">{product.name}</h5>
-              <p className="card-text">{product.description}</p>
-            </div>
+  // Fetch product details when the component mounts
+  useEffect(() => {
+    dispatch(getProductBySlug(slug));
+
+    // Reset the product state when the component unmounts
+    return () => {
+      dispatch(reset());
+    };
+  }, [dispatch, slug]);
+
+  return (
+    <div>
+      <Navbar />
+      <div className="container">
+        {isLoading && <p>Loading product details...</p>}
+        {isError && <p>Error: {message}</p>}
+        {product && (
+          <div className="product-details">
+            <h1>{product.name}</h1>
+            <p>{product.description}</p>
+            <p>Price: ${product.price}</p>
+            {/* Display additional product details here */}
           </div>
-        </div>
-      );
-}
+        )}
+      </div>
+    </div>
+  );
+};
 
-export default DetailPage
+export default DetailPage;

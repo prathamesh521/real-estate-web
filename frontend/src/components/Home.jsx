@@ -33,7 +33,7 @@ const Home = () => {
               <div key={product.id} className="col-12 col-md-6 col-lg-4">
                 <div className="card">
                   <div className="card-body">
-                    <h2>{product.name}</h2>
+                    <Link to={`/products/${product.slug}`}>{product.name}</Link>
                     <p>{product.description}</p>
                     <p>Price: ${product.price}</p>
                   </div>
@@ -44,8 +44,6 @@ const Home = () => {
             <p>No products found</p>
           )}
         </div>
-
-  
       </div>
     </div>
   );

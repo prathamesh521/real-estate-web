@@ -1,6 +1,8 @@
 import axios from "axios";
 
 const API_URL = "/api/products/";
+const API_URL_slug = "/api/products/slug/";
+
 
 // Create new product
 const createProduct = async (productData) => {
@@ -18,16 +20,25 @@ const getProducts = async () => {
     withCredentials: true, // Automatically sends cookies (including JWT) with the request
   });
 
-  console.log('response:', response);
 
   return response.data;
 };
 
+const getProductBySlug = async (slug) => {
+  const response = await axios.get(API_URL_slug + slug )
+  console.log('getproduct by slug');
+
+  if(response.data){
+    console.log('product by slug:', response.data);
+  }
+  return response.data;
+};
 
 
 const productServices = {
   createProduct,
-  getProducts
+  getProducts,
+  getProductBySlug,
 };
 
 export default productServices;

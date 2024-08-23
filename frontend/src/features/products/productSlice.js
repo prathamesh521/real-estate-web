@@ -46,7 +46,19 @@ export const getProducts = createAsyncThunk(
   }
 );
 
-console.log('Initial State:', initialState);
+export const getProductBySlug = createAsyncThunk(
+  "products/getProductBySlug",
+  async (slug, thunkAPI) => {
+    try {
+      console.log(1);
+      return await productServices.getProductBySlug(slug);
+    } catch (error) {
+      console.log(2)
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const productSlice = createSlice({
   name: "product",
   initialState,
@@ -80,11 +92,24 @@ export const productSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(getProductBySlug.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getProductBySlug.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.product = action.payload.product;
+      })
+      .addCase(getProductBySlug.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       });
+
   },
 });
 
-console.log(initialState);
 
 export const { reset } = productSlice.actions;
 export default productSlice.reducer;
