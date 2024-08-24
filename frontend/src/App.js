@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import DetailPage from "./components/DetailPage";
 import UserDashboard from "./components/UserDashboard";
+import Profile from "./components/Profile";
+import EditProduct from "./components/EditProduct";
 
 
 function App() {
@@ -17,7 +19,8 @@ function App() {
         <Route path="/register" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/products/:slug" element={<DetailPage />} />
-        {/* <Route path="/me" element={<UserDashboard />} /> */}
+        <Route path="/products/:slug/edit" element={<EditProduct/>} />
+        <Route path="/profile" element={<Profile/>} />
         
       </Routes>
     </Router>

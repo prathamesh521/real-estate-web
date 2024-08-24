@@ -34,11 +34,38 @@ const getProductBySlug = async (slug) => {
   return response.data;
 };
 
+const getMyProducts = async () => {
+  const response = await axios.get(API_URL + "myProducts", {
+    withCredentials: true, // Automatically sends cookies (including JWT) with the request
+  });
+
+  return response.data;
+};
+
+const updateProduct = async (slug, productData) => {
+  const response = await axios.put(API_URL + slug, productData, {
+    withCredentials: true, // Automatically sends cookies (including JWT) with the request
+  });
+
+  return response.data;
+};
+
+const deleteProduct = async (slug) => {
+  const response = await axios.delete(API_URL + slug, {
+    withCredentials: true, // Automatically sends cookies (including JWT) with the request
+  });
+
+  return response.data;
+};
+
 
 const productServices = {
   createProduct,
   getProducts,
   getProductBySlug,
+  getMyProducts,
+  updateProduct,
+  deleteProduct
 };
 
 export default productServices;
