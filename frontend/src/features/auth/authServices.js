@@ -38,10 +38,21 @@ const getMe = async () => {
 
 };
 
+const logout = async () => {
+    const response = await axios.get(api_url + 'logout');
+
+    if(response.data){
+        Cookies.remove('cookie-client');
+    }
+
+    return response.data;
+}
+
 const authServices = {
     register,
     login,
-    getMe
+    getMe,
+    logout
 };
 
 export default authServices;

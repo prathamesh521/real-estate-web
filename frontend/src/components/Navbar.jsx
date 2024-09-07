@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getMe, reset } from "../features/auth/authSlice"; // Adjust the import path
+import { getMe, reset, logout } from "../features/auth/authSlice"; // Adjust the import path
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -18,6 +18,11 @@ const Navbar = () => {
       dispatch(reset());
     };
   }, [dispatch]);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(reset()); // Optionally reset the state after logout
+  };
 
   return (
     <div>
@@ -41,17 +46,34 @@ const Navbar = () => {
             className="collapse navbar-collapse justify-content-end"
             id="navbarSupportedContent"
           >
+            {isLoading && <p>Loading...</p>}
+            {isError && <p className="text-danger">Error: {message}</p>}
             <ul className="navbar-nav mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link to='/add-listings' className="nav-link active" >
+                <Link to='/add-listings' className="nav-link active">
                   Add Products
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link" to={user ? "/profile" : "/register"}>
-                  {user ? `${user.firstName}` : "Sign Up"} <FaUser />
-                </Link>
-              </li>
+              {user ? (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/profile">
+                      {user.firstName} <FaUser />
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <button className="nav-link btn" onClick={handleLogout}>
+                      Logout
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/register">
+                    Sign Up <FaUser />
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>

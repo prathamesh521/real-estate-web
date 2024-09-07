@@ -58,6 +58,12 @@ const deleteProduct = async (slug) => {
   return response.data;
 };
 
+const getCategories = async () => {
+  const response = await axios.get("/api/categories");
+
+  return response.data;
+};
+
 
 const productServices = {
   createProduct,
@@ -65,7 +71,8 @@ const productServices = {
   getProductBySlug,
   getMyProducts,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getCategories,
 };
 
 export default productServices;

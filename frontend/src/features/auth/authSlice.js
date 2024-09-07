@@ -53,6 +53,16 @@ export const getMe = createAsyncThunk("auth/getMe", async (_, thunkAPI) => {
   }
 });
 
+export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
+  try {
+    return await authServices.logout();
+  } catch (error) {
+    const message = error.message || error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,

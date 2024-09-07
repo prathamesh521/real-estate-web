@@ -25,9 +25,20 @@ const productSchema = new mongoose.Schema({
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        require: true,
+        required: true,
         ref: 'User'
     },
+    category: {
+        type: String,
+        ref: 'Category',
+        required: [true, 'Please select a category for this product']
+    },
+    images: [
+        {
+          type: String,
+          required: [true, "Please add at least one image"], // Ensure this matches with your data
+        },
+      ],
 }, {
     timestamps: true
 });
@@ -46,7 +57,6 @@ async function generateUniqueSlug(name) {
     return slug;
 }
 
-// Pre-save hook to generate unique slug
 productSchema.pre('save', async function(next) {
     if (this.isModified('name')) {
         this.slug = await generateUniqueSlug(this.name);
